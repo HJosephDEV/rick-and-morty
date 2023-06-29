@@ -7,14 +7,13 @@ import './styles.scss';
 export default function Home(): JSX.Element {
   const test: CardProps[] = [
     {
-      imageSrc: 'https://rickandmortyapi.com/api/character/avatar/155.jpeg',
+      imageSrc: 'https://rickandmortyapi.com/api/character/avatar/30.jpeg',
       characterInfos: {
-        name: 'a',
-        gender: '',
-        location: '',
-        origin: '',
-        species: '',
-        status: ''
+        name: 'Baby Poopybutthole',
+        location: 'unknown',
+        origin: 'unknown',
+        species: 'Poopybutthole',
+        status: 'Alive'
       }
     }
   ];

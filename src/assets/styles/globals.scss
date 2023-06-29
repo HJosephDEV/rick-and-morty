@@ -8,12 +8,17 @@
 
 html {
   font-size: 62.5%;
-  // background: #1f1f20;
   
   body {
     min-height: 100vh;
     max-width: 1280px;
+    
+    padding-bottom: 50px;
     margin: 0 auto;
     position: relative;
+  }
+
+  @media (min-width: 485px) {
+    font-size: 83.4375%;
   }
 }
