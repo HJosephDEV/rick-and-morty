@@ -1,0 +1,33 @@
+.search-input__wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+
+    .search-input__container {
+        width: 100%;
+        max-width: 485px;
+        display: flex;
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #8c8c8c;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            border-right: none;
+            outline: none;
+
+            &::placeholder {
+                user-select: none;
+            }
+        }
+    }
+}
+
+@media (min-width: 1070px) {
+    .search-input__wrapper {
+        .search-input__container {
+            max-width: 1010px !important;
+        }
+    }
+}

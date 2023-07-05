@@ -1,6 +1,7 @@
 import { CardProps } from '@/@types/CardComponentsTypes';
 
 import CharacterList from './components/CharacterList';
+import SearchInput from './components/SearchInput';
 
 import './styles.scss';
 
@@ -40,6 +41,7 @@ export default function Home(): JSX.Element {
 
   return (
     <main id="home-container">
+      <SearchInput />
       <CharacterList list={test} />
     </main>
   );
