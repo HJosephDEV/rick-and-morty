@@ -5,12 +5,30 @@
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 
+    overflow: hidden;
+    user-select: none;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    .font-color {
+    .d-flex {
+        display: flex;
+    }
+
+    .ellipsis-card-info {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .font-color-white {
         color: #fff;
+    }
+
+    .font-color-gray {
+        color: #afafaf;
     }
 
     .character-name {
@@ -22,14 +40,23 @@
         font-size: 1.2rem;
         font-weight: 500;
     }
-
+    
     .character-title-content-container {
         display: flex;
         flex-direction: column;
     }
-
+    
     .character-content {
         font-size: 1.4rem;
         font-weight: 500;
+    }
+
+    @media (min-width: 520px) {
+        height: auto !important;
+        width: 100% !important;
+
+        border-top-right-radius: 10px !important;
+        border-bottom-left-radius: 0 !important;
+        
     }
 }

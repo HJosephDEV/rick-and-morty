@@ -1,6 +1,14 @@
 .character-card-container {
+    max-width: 485px;
+    box-shadow: 10px 10px 10px 1px rgba(0, 0, 0, 0.3);
     border: 1px solid #000;
     border-radius: 12px;  
+    display: flex;
+    flex-direction: column;
     
-    box-shadow: 10px 10px 10px 1px rgba(0, 0, 0, 0.3);
+
+    @media (min-width: 520px) {
+        flex-direction: row !important;
+        margin: 0 auto;
+    }
 }

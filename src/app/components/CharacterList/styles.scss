@@ -1,0 +1,15 @@
+.character-list-wrapper {
+    display: flex;
+
+    .character-list-container {
+        width: auto;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 485px);
+        gap: 40px;
+
+        @media (min-width: 1070px) {
+            grid-template-columns: repeat(2, minmax(0, 485px));
+        }
+    }
+}

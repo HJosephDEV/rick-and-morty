@@ -9,16 +9,11 @@
         height: auto;
     }
 
-    @media (min-width: 485px) and (max-width: 768px) {
-        img {
-            width: 40% !important;
-            height: auto !important;
-        }
-    }
+    @media (min-width: 520px) {
+        width: 200px !important;
 
-    @media (min-width: 768px) {
         img {
-            width: 220px;
+            width: 200px !important;
         }
     }
 }

@@ -15,6 +15,26 @@ export default function Home(): JSX.Element {
         species: 'Poopybutthole',
         status: 'Alive'
       }
+    },
+    {
+      imageSrc: 'https://rickandmortyapi.com/api/character/avatar/30.jpeg',
+      characterInfos: {
+        name: 'Baby Poopybutthole',
+        location: 'unknown',
+        origin: 'unknown',
+        species: 'Poopybutthole',
+        status: 'Alive'
+      }
+    },
+    {
+      imageSrc: 'https://rickandmortyapi.com/api/character/avatar/30.jpeg',
+      characterInfos: {
+        name: 'Baby Poopybutthole',
+        location: 'unknown',
+        origin: 'unknown',
+        species: 'Poopybutthole',
+        status: 'Alive'
+      }
     }
   ];
 

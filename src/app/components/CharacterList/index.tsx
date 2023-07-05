@@ -7,7 +7,7 @@ import './styles.scss';
 
 export default function CharacterList({ list }: CharacterListProps): JSX.Element {
   return (
-    <>
+    <div className="character-list-wrapper">
       <ul className="character-list-container">
         {list.length > 0 &&
           list.map(({ imageSrc, characterInfos }: CharacterListItemProps, i: number) => (
@@ -18,6 +18,6 @@ export default function CharacterList({ list }: CharacterListProps): JSX.Element
             />
           ))}
       </ul>
-    </>
+    </div>
   );
 }
