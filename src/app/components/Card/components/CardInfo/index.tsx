@@ -1,7 +1,6 @@
-'use client';
-import { Tooltip } from 'react-tooltip';
-
 import { CardInfosProps } from '@/@types/CardComponentsTypes';
+
+import TooltipComponent from '@/components/Tooltip';
 
 import './styles.scss';
 
@@ -17,24 +16,24 @@ export default function CardInfo({
       <div className="d-flex">
         <span className="character-name font-color-white ellipsis-card-info">{name}</span>
       </div>
-      <Tooltip
+      <TooltipComponent
         anchorSelect=".character-name"
         place="top"
       >
         {name}
-      </Tooltip>
+      </TooltipComponent>
 
       <div className="d-flex">
         <span className="character-content character-status-species font-color-white ellipsis-card-info">
           {status} - {species}
         </span>
       </div>
-      <Tooltip
+      <TooltipComponent
         anchorSelect=".character-status-species"
         place="top"
       >
         {status} - {species}
-      </Tooltip>
+      </TooltipComponent>
 
       <div className="character-title-content-container">
         <span className="character-title font-color-gray">Primeira vez visto:</span>
@@ -43,12 +42,12 @@ export default function CardInfo({
             {origin}
           </span>
         </div>
-        <Tooltip
+        <TooltipComponent
           anchorSelect=".character-origin"
           place="top"
         >
           {origin}
-        </Tooltip>
+        </TooltipComponent>
       </div>
 
       <div className="character-title-content-container">
@@ -58,12 +57,12 @@ export default function CardInfo({
             {location}
           </span>
         </div>
-        <Tooltip
+        <TooltipComponent
           anchorSelect=".character-location"
           place="top"
         >
           {location}
-        </Tooltip>
+        </TooltipComponent>
       </div>
     </div>
   );
