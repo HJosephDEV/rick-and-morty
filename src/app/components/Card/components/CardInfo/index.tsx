@@ -1,4 +1,4 @@
-import { CardInfosProps } from '@/@types/CardComponentsTypes';
+import { CardInfosProps } from '@/@types';
 
 import TooltipComponent from '@/components/Tooltip';
 

@@ -1,5 +1,4 @@
-import { CharacterListItemProps } from '../../../@types/CharacterListTypes';
-import { CharacterListProps } from '@/@types/CharacterListTypes';
+import { CharacterListItemProps, CharacterListProps } from '@/@types';
 
 import ListItem from './components/ListItem';
 

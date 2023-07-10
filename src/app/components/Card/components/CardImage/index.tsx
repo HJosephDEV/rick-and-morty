@@ -1,4 +1,4 @@
-import { CardImage } from '@/@types/CardComponentsTypes';
+import { CardImage } from '@/@types';
 
 import './styles.scss';
 

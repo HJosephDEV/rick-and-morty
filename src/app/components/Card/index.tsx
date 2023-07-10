@@ -1,4 +1,4 @@
-import { CardProps } from '@/@types/CardComponentsTypes';
+import { CardProps } from '@/@types';
 
 import CardImage from './components/CardImage';
 import CardInfo from './components/CardInfo';

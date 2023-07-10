@@ -1,4 +1,4 @@
-import { CharacterListItemProps } from '@/@types/CharacterListTypes';
+import { CharacterListItemProps } from '@/@types';
 
 import Card from '@/app/components/Card';
 
