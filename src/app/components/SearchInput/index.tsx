@@ -9,7 +9,7 @@ export default function SearchInput({
   setSearchInputValue,
   searchCharacter
 }: SearchInputProps): JSX.Element {
-  const handleInput = (text: string) => setSearchInputValue(text);
+  // const handleInput = (text: string) => setSearchInputValue(text);
 
   const handleSearchCharacter = (): void => searchCharacter(searchInputValue);
 
@@ -19,8 +19,8 @@ export default function SearchInput({
         <input
           type="text"
           placeholder="Pesquise por um personagem"
-          value={searchInputValue}
-          onChange={(e) => handleInput(e.target.value)}
+          defaultValue={searchInputValue}
+          onChange={(e) => setSearchInputValue(e.target.value)}
         />
         <SearchButton clickEvent={handleSearchCharacter} />
       </div>

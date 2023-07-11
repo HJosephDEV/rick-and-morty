@@ -20,7 +20,3 @@ export default function Home(): JSX.Element {
     </main>
   );
 }
-
-export async function getServerSideProps() {
-  return { props: {} };
-}

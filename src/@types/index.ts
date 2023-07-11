@@ -1,5 +1,5 @@
 export type CardInfosProps = {
-  id?: number;
+  id: number;
   name: string;
   status: string;
   species: string;

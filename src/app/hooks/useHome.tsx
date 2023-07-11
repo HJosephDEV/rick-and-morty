@@ -1,69 +1,73 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CardProps } from '@/@types';
 
-export default function useHome() {
-  const [characterList, setCharacter] = useState<CardProps[]>([
-    {
-      imageSrc: 'https://rickandmortyapi.com/api/character/avatar/30.jpeg',
-      characterInfos: {
-        name: 'Baby Poopybutthole',
-        location: 'unknown',
-        origin: 'unknown',
-        species: 'Poopybutthole',
-        status: 'Alive'
-      }
-    }
-  ]);
+import axios from '@/axios/axios';
 
+export default function useHome() {
+  const [characterList, setCharacter] = useState<CardProps[]>([]);
   const [searchInputValue, setSearchInputValue] = useState<string>('');
-  const [filteredCharacters, setFilteredCharacters] = useState<CardProps[]>(characterList);
+
+  const filteredCharacters = searchInputValue
+    ? characterList.filter((character) =>
+        character.characterInfos.name.toLowerCase().includes(searchInputValue)
+      )
+    : characterList;
 
   window.addEventListener('keydown', function ({ key }) {
     key === 'Enter' && searchCharacter(searchInputValue);
   });
 
-  const searchCharacter = (name: string): void => {
-    const inputHasValue = checkIfInputHasValue(name);
-
-    if (!inputHasValue) return;
-
-    const filteredList: CardProps[] = filterCharacterInCurrentList(name);
-    const foundCharacter: boolean = checkIfCharacterWasFound(filteredList);
-
-    foundCharacter ? setFilteredCharacters(filteredList) : searchCharacterInExternList(name);
+  const createCharactersList = (characters: any[]): CardProps[] => {
+    return characters.map((character) => ({
+      imageSrc: character.image,
+      characterInfos: {
+        id: character.id,
+        name: character.name,
+        location: character.location.name,
+        origin: character.origin.name,
+        species: character.species,
+        status: character.status
+      }
+    }));
   };
 
-  const checkIfInputHasValue = (value: string): boolean => {
-    if (!value) {
-      characterList != filteredCharacters && setFilteredCharacters(characterList);
-      return false;
-    }
-
-    return true;
-  };
-
-  const filterCharacterInCurrentList = (name: string): CardProps[] =>
-    characterList?.filter((character: CardProps) =>
-      character.characterInfos.name.toLocaleLowerCase().includes(name.toLocaleLowerCase())
+  const addAndSortNewCharacters = (charactersListPattern: CardProps[]): void =>
+    setCharacter(
+      [...characterList, ...charactersListPattern]
+        .filter(
+          (character, i, list) =>
+            list
+              .map((characterHelp: CardProps) => characterHelp.characterInfos.id)
+              .indexOf(character.characterInfos.id) === i
+        )
+        .sort((a, b) => {
+          if (a.characterInfos.id > b.characterInfos.id) return 1;
+          if (a.characterInfos.id < b.characterInfos.id) return -1;
+          return 0;
+        })
     );
 
-  const checkIfCharacterWasFound = (list: CardProps[]): boolean => list.length > 0;
+  const searchCharacter = async (name: string): Promise<void> => {
+    const { data }: any = await axios.get(`/api/character/?name=${name}`);
+    const characters: any[] = data.results;
+    const charactersListPattern: CardProps[] = createCharactersList(characters);
 
-  const searchCharacterInExternList = async (name: string): Promise<void> => {
-    console.log(name);
-    checkIfExternListHasResult([]);
+    addAndSortNewCharacters(charactersListPattern);
   };
 
-  const checkIfExternListHasResult = (list: CardProps[]) => {
-    if (list.length > 0) {
-      setFilteredCharacters([...filteredCharacters, ...list]);
-      setCharacter([...characterList, ...list]);
-      return;
-    }
+  const getCharacters = async () => {
+    const { data }: any = await axios.get('/api/character');
+    const characters: any[] = data.results;
+    const charactersListPattern: CardProps[] = createCharactersList(characters);
 
-    setFilteredCharacters([]);
+    setCharacter(charactersListPattern);
   };
+
+  useEffect(() => {
+    getCharacters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     characterList,
