@@ -5,6 +5,7 @@ import TooltipComponent from '@/components/Tooltip';
 import './styles.scss';
 
 export default function CardInfo({
+  id,
   name,
   status,
   species,
@@ -14,22 +15,30 @@ export default function CardInfo({
   return (
     <div className="card-info-container">
       <div className="d-flex">
-        <span className="character-name font-color-white ellipsis-card-info">{name}</span>
+        <span
+          id={`character-name-${id}`}
+          className="character-name font-color-white ellipsis-card-info"
+        >
+          {name}
+        </span>
       </div>
       <TooltipComponent
-        anchorSelect=".character-name"
+        anchorSelect={`#character-name-${id}`}
         place="top"
       >
         {name}
       </TooltipComponent>
 
       <div className="d-flex">
-        <span className="character-content character-status-species font-color-white ellipsis-card-info">
+        <span
+          id={`character-status-species-${id}`}
+          className="character-content character-status-species font-color-white ellipsis-card-info"
+        >
           {status} - {species}
         </span>
       </div>
       <TooltipComponent
-        anchorSelect=".character-status-species"
+        anchorSelect={`#character-status-species-${id}`}
         place="top"
       >
         {status} - {species}
@@ -38,12 +47,15 @@ export default function CardInfo({
       <div className="character-title-content-container">
         <span className="character-title font-color-gray">Primeira vez visto:</span>
         <div className="d-flex">
-          <span className="character-content character-origin font-color-white ellipsis-card-info">
+          <span
+            id={`character-origin-${id}`}
+            className="character-content character-origin font-color-white ellipsis-card-info"
+          >
             {origin}
           </span>
         </div>
         <TooltipComponent
-          anchorSelect=".character-origin"
+          anchorSelect={`#character-origin-${id}`}
           place="top"
         >
           {origin}
@@ -53,12 +65,15 @@ export default function CardInfo({
       <div className="character-title-content-container">
         <span className="character-title font-color-gray">Última localização:</span>
         <div className="d-flex">
-          <span className="character-content character-location font-color-white ellipsis-card-info">
+          <span
+            id={`character-location-${id}`}
+            className="character-content character-location font-color-white ellipsis-card-info"
+          >
             {location}
           </span>
         </div>
         <TooltipComponent
-          anchorSelect=".character-location"
+          anchorSelect={`#character-location-${id}`}
           place="top"
         >
           {location}
