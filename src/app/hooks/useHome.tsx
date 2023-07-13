@@ -1,22 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { CardProps } from '@/@types';
 
 import axios from '@/axios/axios';
+import useOnScreen from '@/hooks/useOnScreen';
 
 export default function useHome() {
   const [characterList, setCharacter] = useState<CardProps[]>([]);
-  const [searchInputValue, setSearchInputValue] = useState<string>('');
+  const { isIntersecting, observer } = useOnScreen();
+
+  const searchedByExternListRef = useRef<boolean>(false);
+  const setSearchedByExternListRef = (flag: boolean) => (searchedByExternListRef.current = flag);
+
+  const infoForNextPageOfTheGeneralListRef = useRef<string | null>('');
+  const setInfoForNextPageOfTheGeneralListRef = (link: string) =>
+    (infoForNextPageOfTheGeneralListRef.current = link);
+
+  const infoForNextPageOfTheFilterRef = useRef<string | null>('');
+  const setInfoForNextPageOfTheFilterRef = (link: string) =>
+    (infoForNextPageOfTheFilterRef.current = link);
+
+  const [searchInputValue, _setSearchInputValue] = useState<string>('');
+  const searchInputValueRef = useRef('');
+
+  const setSearchInputValue = (data: string) => {
+    searchInputValueRef.current = data;
+    _setSearchInputValue(data);
+  };
 
   const filteredCharacters = searchInputValue
     ? characterList.filter((character) =>
         character.characterInfos.name.toLowerCase().includes(searchInputValue)
       )
     : characterList;
-
-  window.addEventListener('keydown', function ({ key }) {
-    key === 'Enter' && searchCharacter(searchInputValue);
-  });
 
   const createCharactersList = (characters: any[]): CardProps[] => {
     return characters.map((character) => ({
@@ -48,26 +64,78 @@ export default function useHome() {
         })
     );
 
-  const searchCharacter = async (name: string): Promise<void> => {
-    const { data }: any = await axios.get(`/api/character/?name=${name}`);
-    const characters: any[] = data.results;
-    const charactersListPattern: CardProps[] = createCharactersList(characters);
+  const getCharacters = (): void => {
+    axios
+      .get('/api/character')
+      .then((response) => {
+        const { data } = response;
+        const characters: any[] = data.results;
+        const charactersListPattern: CardProps[] = createCharactersList(characters);
 
-    addAndSortNewCharacters(charactersListPattern);
+        setInfoForNextPageOfTheGeneralListRef(data.info.next);
+        setCharacter(charactersListPattern);
+      })
+      .catch((e) => console.error(e.message));
+  };
+  const searchCharacter = (name: string): void => {
+    axios
+      .get(`/api/charactereee/?name=${name}`)
+      .then((response) => {
+        const { data } = response;
+        const characters: any[] = data.results;
+        const charactersListPattern: CardProps[] = createCharactersList(characters);
+
+        setInfoForNextPageOfTheFilterRef(data.info.next);
+        setSearchedByExternListRef(true);
+        addAndSortNewCharacters(charactersListPattern);
+      })
+      .catch((e) => console.error(e.message));
   };
 
-  const getCharacters = async () => {
-    const { data }: any = await axios.get('/api/character');
-    const characters: any[] = data.results;
-    const charactersListPattern: CardProps[] = createCharactersList(characters);
+  const getNextPage = (): void => {
+    const nextPageLink: string | null | undefined = searchedByExternListRef.current
+      ? infoForNextPageOfTheFilterRef.current?.slice(27)
+      : infoForNextPageOfTheGeneralListRef.current?.slice(27);
 
-    setCharacter(charactersListPattern);
+    if (!nextPageLink) return;
+
+    axios
+      .get(nextPageLink)
+      .then((response) => {
+        const { data } = response;
+        const characters: any[] = data.results;
+        const charactersListPattern: CardProps[] = createCharactersList(characters);
+
+        searchedByExternListRef.current
+          ? setInfoForNextPageOfTheFilterRef(data.info.next)
+          : setInfoForNextPageOfTheGeneralListRef(data.info.next);
+
+        addAndSortNewCharacters(charactersListPattern);
+      })
+      .catch((e) => console.error(e.message));
+  };
+
+  const handlerEventListernerKeydown = ({ key }: { key: string }) => {
+    if (key === 'Enter') {
+      searchCharacter(searchInputValueRef.current);
+      return;
+    }
+
+    searchedByExternListRef.current && setSearchedByExternListRef(false);
   };
 
   useEffect(() => {
     getCharacters();
+
+    window.addEventListener('keydown', handlerEventListernerKeydown);
+    return () => window.removeEventListener('keydown', handlerEventListernerKeydown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    isIntersecting && getNextPage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIntersecting]);
 
   return {
     characterList,
@@ -75,6 +143,7 @@ export default function useHome() {
     searchInputValue,
     setSearchInputValue,
     filteredCharacters,
-    searchCharacter
+    searchCharacter,
+    observer
   };
 }
