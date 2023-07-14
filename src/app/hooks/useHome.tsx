@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { CardProps } from '@/@types';
+import { CardProps, Character, ResponseCharacter } from '@/@types';
 
 import axios from '@/axios/axios';
 import useOnScreen from '@/hooks/useOnScreen';
+
+import { AxiosError, AxiosResponse } from 'axios';
 
 export default function useHome() {
   const [characterList, setCharacter] = useState<CardProps[]>([]);
@@ -13,11 +15,11 @@ export default function useHome() {
   const setSearchedByExternListRef = (flag: boolean) => (searchedByExternListRef.current = flag);
 
   const infoForNextPageOfTheGeneralListRef = useRef<string | null>('');
-  const setInfoForNextPageOfTheGeneralListRef = (link: string) =>
+  const setInfoForNextPageOfTheGeneralListRef = (link: string | null) =>
     (infoForNextPageOfTheGeneralListRef.current = link);
 
   const infoForNextPageOfTheFilterRef = useRef<string | null>('');
-  const setInfoForNextPageOfTheFilterRef = (link: string) =>
+  const setInfoForNextPageOfTheFilterRef = (link: string | null) =>
     (infoForNextPageOfTheFilterRef.current = link);
 
   const [searchInputValue, _setSearchInputValue] = useState<string>('');
@@ -34,7 +36,7 @@ export default function useHome() {
       )
     : characterList;
 
-  const createCharactersList = (characters: any[]): CardProps[] => {
+  const createCharactersList = (characters: Character[]): CardProps[] => {
     return characters.map((character) => ({
       imageSrc: character.image,
       characterInfos: {
@@ -67,29 +69,29 @@ export default function useHome() {
   const getCharacters = (): void => {
     axios
       .get('/api/character')
-      .then((response) => {
+      .then((response: AxiosResponse<ResponseCharacter>) => {
         const { data } = response;
-        const characters: any[] = data.results;
-        const charactersListPattern: CardProps[] = createCharactersList(characters);
+        const characters = data.results;
+        const charactersListPattern = createCharactersList(characters);
 
         setInfoForNextPageOfTheGeneralListRef(data.info.next);
         setCharacter(charactersListPattern);
       })
-      .catch((e) => console.error(e.message));
+      .catch((error: AxiosError) => console.error(error.message));
   };
   const searchCharacter = (name: string): void => {
     axios
-      .get(`/api/charactereee/?name=${name}`)
-      .then((response) => {
+      .get(`/api/character?name=${name}`)
+      .then((response: AxiosResponse<ResponseCharacter>) => {
         const { data } = response;
-        const characters: any[] = data.results;
-        const charactersListPattern: CardProps[] = createCharactersList(characters);
+        const characters = data.results;
+        const charactersListPattern = createCharactersList(characters);
 
         setInfoForNextPageOfTheFilterRef(data.info.next);
         setSearchedByExternListRef(true);
         addAndSortNewCharacters(charactersListPattern);
       })
-      .catch((e) => console.error(e.message));
+      .catch((error: AxiosError) => console.error(error.message));
   };
 
   const getNextPage = (): void => {
@@ -101,10 +103,10 @@ export default function useHome() {
 
     axios
       .get(nextPageLink)
-      .then((response) => {
+      .then((response: AxiosResponse<ResponseCharacter>) => {
         const { data } = response;
-        const characters: any[] = data.results;
-        const charactersListPattern: CardProps[] = createCharactersList(characters);
+        const characters = data.results;
+        const charactersListPattern = createCharactersList(characters);
 
         searchedByExternListRef.current
           ? setInfoForNextPageOfTheFilterRef(data.info.next)
@@ -112,7 +114,7 @@ export default function useHome() {
 
         addAndSortNewCharacters(charactersListPattern);
       })
-      .catch((e) => console.error(e.message));
+      .catch((error: AxiosError) => console.error(error.message));
   };
 
   const handlerEventListernerKeydown = ({ key }: { key: string }) => {
