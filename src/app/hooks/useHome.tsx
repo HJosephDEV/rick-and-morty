@@ -51,8 +51,8 @@ export default function useHome() {
   };
 
   const addAndSortNewCharacters = (charactersListPattern: CardProps[]): void =>
-    setCharacter(
-      [...characterList, ...charactersListPattern]
+    setCharacter((characterListPrev) =>
+      [...characterListPrev, ...charactersListPattern]
         .filter(
           (character, i, list) =>
             list
@@ -79,6 +79,7 @@ export default function useHome() {
       })
       .catch((error: AxiosError) => console.error(error.message));
   };
+
   const searchCharacter = (name: string): void => {
     axios
       .get(`/api/character?name=${name}`)
