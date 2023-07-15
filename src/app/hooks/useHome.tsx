@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import { CardProps, Character, ResponseCharacter } from '@/@types';
 
 import axios from '@/axios/axios';
+import { useAppContext } from '@/context/AppContext';
 import useOnScreen from '@/hooks/useOnScreen';
 
 import { AxiosError, AxiosResponse } from 'axios';
 
 export default function useHome() {
+  const { updateIsLoading } = useAppContext();
   const [characterList, setCharacter] = useState<CardProps[]>([]);
   const { isIntersecting, observer } = useOnScreen();
 
@@ -67,6 +69,8 @@ export default function useHome() {
     );
 
   const getCharacters = (): void => {
+    updateIsLoading(true);
+
     axios
       .get('/api/character')
       .then((response: AxiosResponse<ResponseCharacter>) => {
@@ -76,11 +80,17 @@ export default function useHome() {
 
         setInfoForNextPageOfTheGeneralListRef(data.info.next);
         setCharacter(charactersListPattern);
+        updateIsLoading(false);
       })
-      .catch((error: AxiosError) => console.error(error.message));
+      .catch((error: AxiosError) => {
+        console.error(error.message);
+        updateIsLoading(false);
+      });
   };
 
   const searchCharacter = (name: string): void => {
+    updateIsLoading(true);
+
     axios
       .get(`/api/character?name=${name}`)
       .then((response: AxiosResponse<ResponseCharacter>) => {
@@ -91,8 +101,12 @@ export default function useHome() {
         setInfoForNextPageOfTheFilterRef(data.info.next);
         setSearchedByExternListRef(true);
         addAndSortNewCharacters(charactersListPattern);
+        updateIsLoading(false);
       })
-      .catch((error: AxiosError) => console.error(error.message));
+      .catch((error: AxiosError) => {
+        console.error(error.message);
+        updateIsLoading(false);
+      });
   };
 
   const getNextPage = (): void => {
@@ -102,6 +116,7 @@ export default function useHome() {
 
     if (!nextPageLink) return;
 
+    updateIsLoading(true);
     axios
       .get(nextPageLink)
       .then((response: AxiosResponse<ResponseCharacter>) => {
@@ -114,8 +129,12 @@ export default function useHome() {
           : setInfoForNextPageOfTheGeneralListRef(data.info.next);
 
         addAndSortNewCharacters(charactersListPattern);
+        updateIsLoading(false);
       })
-      .catch((error: AxiosError) => console.error(error.message));
+      .catch((error: AxiosError) => {
+        console.error(error.message);
+        updateIsLoading(false);
+      });
   };
 
   const handlerEventListernerKeydown = ({ key }: { key: string }) => {
