@@ -1,7 +1,6 @@
 #footer-layout {
     width: 100%;
     height: 50px;
-    background: #000;
 
     display: flex;
     align-items: center;
@@ -12,10 +11,11 @@
 
     p {
         font-size: 12px;
-        color: #fff;
+        font-weight: 600;
+        color: #000;
 
         b {
-            color: #fff500;
+            color: #003cff;
         }
     }
 }
