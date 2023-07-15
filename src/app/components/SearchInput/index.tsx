@@ -4,14 +4,8 @@ import SearchButton from './components/SearchButton';
 
 import './styles.scss';
 
-export default function SearchInput({
-  searchInputValue,
-  setSearchInputValue,
-  searchCharacter
-}: SearchInputProps): JSX.Element {
-  // const handleInput = (text: string) => setSearchInputValue(text);
-
-  const handleSearchCharacter = (): void => searchCharacter(searchInputValue);
+export default function SearchInput({ inputRef, searchCharacter }: SearchInputProps): JSX.Element {
+  const handleSearchCharacter = (): void => searchCharacter();
 
   return (
     <div className="search-input__wrapper">
@@ -19,8 +13,7 @@ export default function SearchInput({
         <input
           type="text"
           placeholder="Pesquise por um personagem"
-          defaultValue={searchInputValue}
-          onChange={(e) => setSearchInputValue(e.target.value)}
+          ref={inputRef}
         />
         <SearchButton clickEvent={handleSearchCharacter} />
       </div>

@@ -23,9 +23,8 @@ export type CharacterListProps = {
 export type CharacterListItemProps = CardProps;
 
 export type SearchInputProps = {
-  searchInputValue: string;
-  setSearchInputValue: (text: string) => void;
-  searchCharacter: (text: string) => void;
+  inputRef: React.RefObject<HTMLInputElement>;
+  searchCharacter: () => void;
 };
 
 export type SearchButtonProps = { clickEvent: () => void };

@@ -24,19 +24,14 @@ export default function useHome() {
   const setInfoForNextPageOfTheFilterRef = (link: string | null) =>
     (infoForNextPageOfTheFilterRef.current = link);
 
-  const [searchInputValue, _setSearchInputValue] = useState<string>('');
-  const searchInputValueRef = useRef('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchInputValueRef: string = searchInputRef.current?.value ?? '';
 
-  const setSearchInputValue = (data: string) => {
-    searchInputValueRef.current = data;
-    _setSearchInputValue(data);
-  };
-
-  const filteredCharacters = searchInputValue
+  const filteredCharacters = searchInputValueRef
     ? characterList.filter((character) =>
-        character.characterInfos.name.toLowerCase().includes(searchInputValue)
+        character.characterInfos.name.toLowerCase().includes(searchInputValueRef)
       )
-    : characterList;
+    : [];
 
   const createCharactersList = (characters: Character[]): CardProps[] => {
     return characters.map((character) => ({
@@ -82,11 +77,11 @@ export default function useHome() {
       });
   };
 
-  const searchCharacter = (name: string): void => {
+  const searchCharacter = (): void => {
     updateIsLoading(true);
 
     axios
-      .get(`/api/character?name=${name}`)
+      .get(`/api/character?name=${searchInputValueRef ?? ''}`)
       .then((response: AxiosResponse<ResponseCharacter>) => {
         const { data } = response;
         const characters = data.results;
@@ -133,7 +128,7 @@ export default function useHome() {
 
   const handlerEventListernerKeydown = ({ key }: { key: string }) => {
     if (key === 'Enter') {
-      searchCharacter(searchInputValueRef.current);
+      searchCharacter();
       return;
     }
 
@@ -156,8 +151,7 @@ export default function useHome() {
   return {
     characterList,
     setCharacter,
-    searchInputValue,
-    setSearchInputValue,
+    searchInputRef,
     filteredCharacters,
     searchCharacter,
     observer
