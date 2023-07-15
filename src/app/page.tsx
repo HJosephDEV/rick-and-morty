@@ -1,5 +1,7 @@
 'use client';
 
+import ScrollButton from '@/components/ScrollButon';
+
 import CharacterList from './components/CharacterList';
 import SearchInput from './components/SearchInput';
 import useHome from './hooks/useHome';
@@ -17,9 +19,12 @@ export default function Home(): JSX.Element {
         setSearchInputValue={setSearchInputValue}
         searchCharacter={searchCharacter}
       />
+
       <CharacterList list={filteredCharacters} />
 
       <div ref={observer} />
+
+      <ScrollButton />
     </main>
   );
 }
