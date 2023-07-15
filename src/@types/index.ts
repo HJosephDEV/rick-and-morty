@@ -33,7 +33,7 @@ export type SearchButtonProps = { clickEvent: () => void };
 export type TooltipProps = {
   anchorSelect: string;
   place: 'top' | 'bottom';
-  children: React.ReactNode | React.ReactNode[];
+  children: ReactNode;
 };
 
 export type Character = {
@@ -67,4 +67,13 @@ export type CharacterInfo = {
 export type ResponseCharacter = {
   info: CharacterInfo;
   results: Character[];
+};
+
+export type ReactNode = {
+  children: React.ReactNode | React.ReactNode[];
+};
+
+export type AppContextType = {
+  isLoading: boolean;
+  updateIsLoading: (value: boolean) => void;
 };

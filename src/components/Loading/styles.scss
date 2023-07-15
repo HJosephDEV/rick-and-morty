@@ -1,0 +1,16 @@
+#lsc__loading-c {
+    height: 100dvh;
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+    backdrop-filter: blur(2px) !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+}
