@@ -29,7 +29,9 @@ export default function useHome() {
 
   const filteredCharacters = searchInputValueRef
     ? characterList.filter((character) =>
-        character.characterInfos.name.toLowerCase().includes(searchInputValueRef)
+        character.characterInfos.name
+          .toLowerCase()
+          .includes(searchInputValueRef.toLocaleLowerCase())
       )
     : [];
 
