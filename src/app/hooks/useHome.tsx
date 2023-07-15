@@ -54,18 +54,12 @@ export default function useHome() {
 
   const addAndSortNewCharacters = (charactersListPattern: CardProps[]): void =>
     setCharacter((characterListPrev) =>
-      [...characterListPrev, ...charactersListPattern]
-        .filter(
-          (character, i, list) =>
-            list
-              .map((characterHelp: CardProps) => characterHelp.characterInfos.id)
-              .indexOf(character.characterInfos.id) === i
-        )
-        .sort((a, b) => {
-          if (a.characterInfos.id > b.characterInfos.id) return 1;
-          if (a.characterInfos.id < b.characterInfos.id) return -1;
-          return 0;
-        })
+      [...characterListPrev, ...charactersListPattern].filter(
+        (character, i, list) =>
+          list
+            .map((characterHelp: CardProps) => characterHelp.characterInfos.id)
+            .indexOf(character.characterInfos.id) === i
+      )
     );
 
   const getCharacters = (): void => {
