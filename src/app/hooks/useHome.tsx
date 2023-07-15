@@ -25,15 +25,6 @@ export default function useHome() {
     (infoForNextPageOfTheFilterRef.current = link);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const searchInputValueRef: string = searchInputRef.current?.value ?? '';
-
-  const filteredCharacters = searchInputValueRef
-    ? characterList.filter((character) =>
-        character.characterInfos.name
-          .toLowerCase()
-          .includes(searchInputValueRef.toLocaleLowerCase())
-      )
-    : [];
 
   const createCharactersList = (characters: Character[]): CardProps[] => {
     return characters.map((character) => ({
@@ -48,16 +39,6 @@ export default function useHome() {
       }
     }));
   };
-
-  const addAndSortNewCharacters = (charactersListPattern: CardProps[]): void =>
-    setCharacter((characterListPrev) =>
-      [...characterListPrev, ...charactersListPattern].filter(
-        (character, i, list) =>
-          list
-            .map((characterHelp: CardProps) => characterHelp.characterInfos.id)
-            .indexOf(character.characterInfos.id) === i
-      )
-    );
 
   const getCharacters = (): void => {
     updateIsLoading(true);
@@ -81,9 +62,8 @@ export default function useHome() {
 
   const searchCharacter = (): void => {
     updateIsLoading(true);
-
     axios
-      .get(`/api/character?name=${searchInputValueRef ?? ''}`)
+      .get(`/api/character?name=${searchInputRef.current?.value ?? ''}`)
       .then((response: AxiosResponse<ResponseCharacter>) => {
         const { data } = response;
         const characters = data.results;
@@ -91,7 +71,7 @@ export default function useHome() {
 
         setInfoForNextPageOfTheFilterRef(data.info.next);
         setSearchedByExternListRef(true);
-        addAndSortNewCharacters(charactersListPattern);
+        setCharacter(charactersListPattern);
         updateIsLoading(false);
       })
       .catch((error: AxiosError) => {
@@ -119,7 +99,7 @@ export default function useHome() {
           ? setInfoForNextPageOfTheFilterRef(data.info.next)
           : setInfoForNextPageOfTheGeneralListRef(data.info.next);
 
-        addAndSortNewCharacters(charactersListPattern);
+        setCharacter([...characterList, ...charactersListPattern]);
         updateIsLoading(false);
       })
       .catch((error: AxiosError) => {
@@ -134,7 +114,8 @@ export default function useHome() {
       return;
     }
 
-    searchedByExternListRef.current && setSearchedByExternListRef(false);
+    const inputValue: string = searchInputRef.current?.value ?? '';
+    searchedByExternListRef.current && !inputValue && setSearchedByExternListRef(false);
   };
 
   useEffect(() => {
@@ -154,7 +135,6 @@ export default function useHome() {
     characterList,
     setCharacter,
     searchInputRef,
-    filteredCharacters,
     searchCharacter,
     observer
   };
