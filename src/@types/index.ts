@@ -33,8 +33,7 @@ export type SearchButtonProps = { clickEvent: () => void };
 export type TooltipProps = {
   anchorSelect: string;
   place: 'top' | 'bottom';
-  children: string | null;
-};
+} & ReactNode;
 
 export type Character = {
   id: number;

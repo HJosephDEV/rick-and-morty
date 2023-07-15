@@ -26,7 +26,7 @@ export default function CardInfo({
         anchorSelect={`#character-name-${id}`}
         place="top"
       >
-        {name}
+        <span>{name}</span>
       </TooltipComponent>
 
       <div className="d-flex">
@@ -41,7 +41,9 @@ export default function CardInfo({
         anchorSelect={`#character-status-species-${id}`}
         place="top"
       >
-        {status} - {species}
+        <span>
+          {status} - {species}
+        </span>
       </TooltipComponent>
 
       <div className="character-title-content-container">
@@ -58,7 +60,7 @@ export default function CardInfo({
           anchorSelect={`#character-origin-${id}`}
           place="top"
         >
-          {origin}
+          <span>{origin}</span>
         </TooltipComponent>
       </div>
 
@@ -76,7 +78,7 @@ export default function CardInfo({
           anchorSelect={`#character-location-${id}`}
           place="top"
         >
-          {location}
+          <span>{location}</span>
         </TooltipComponent>
       </div>
     </div>
