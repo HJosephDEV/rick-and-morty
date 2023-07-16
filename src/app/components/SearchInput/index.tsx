@@ -17,7 +17,9 @@ export default function SearchInput({ inputRef, searchCharacter }: SearchInputPr
         />
         <SearchButton clickEvent={handleSearchCharacter} />
       </div>
-      <h3 className="search-obs">Pressione o botão de pesquisa ou aperte enter para pesquisar</h3>
+      <h3 className="search-obs">
+        Pressione o botão de pesquisa ou pressione Enter para pesquisar
+      </h3>
     </div>
   );
 }
