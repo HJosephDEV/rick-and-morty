@@ -1,0 +1,16 @@
+.ntf__container {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-grow: 1;
+
+    .ntf__content {
+        font-size: 18px; 
+        opacity: 0.7; 
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+

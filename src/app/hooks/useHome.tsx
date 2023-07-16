@@ -55,7 +55,7 @@ export default function useHome() {
         updateIsLoading(false);
       })
       .catch((error: AxiosError) => {
-        console.error(error.message);
+        error.response?.status === 404 && setCharacter([]);
         updateIsLoading(false);
       });
   };
@@ -71,11 +71,12 @@ export default function useHome() {
 
         setInfoForNextPageOfTheFilterRef(data.info.next);
         setSearchedByExternListRef(true);
+        console.log(charactersListPattern);
         setCharacter(charactersListPattern);
         updateIsLoading(false);
       })
       .catch((error: AxiosError) => {
-        console.error(error.message);
+        error.response?.status === 404 && setCharacter([]);
         updateIsLoading(false);
       });
   };
@@ -103,7 +104,7 @@ export default function useHome() {
         updateIsLoading(false);
       })
       .catch((error: AxiosError) => {
-        console.error(error.message);
+        error.response?.status === 404 && setCharacter([]);
         updateIsLoading(false);
       });
   };

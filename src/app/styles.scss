@@ -1,4 +1,8 @@
 #home-container {
     height: 100%;
     padding: 60px 30px;
+
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
