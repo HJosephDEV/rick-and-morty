@@ -4,13 +4,27 @@
     line-height: 0;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    position: relative;
     
-    img {
+    .card__image,
+    .image__wrapper {
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         width: 100%;
         height: auto;
     }
+
+    .image__wrapper {
+        z-index: 1;
+    }
+
+    .card__image {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+    }
+    
 
     @media (min-width: 520px) {
         min-height: 200px;
@@ -18,7 +32,8 @@
         height: 200px !important;
         width: 200px !important;
 
-        img {
+        .card__image,
+        .image__wrapper {
             width: 200px !important;
             border-bottom-left-radius: 10px;
             border-top-right-radius: 0px !important;
